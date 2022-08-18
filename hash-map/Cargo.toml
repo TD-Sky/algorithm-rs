@@ -1,0 +1,5 @@
+[workspace]
+members = [
+    "chain-hash-map",
+    "linear-hash-map",
+]
