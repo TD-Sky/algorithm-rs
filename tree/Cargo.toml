@@ -1,0 +1,5 @@
+[workspace]
+members = [
+    "avl-tree",
+    "red-black-tree",
+]
