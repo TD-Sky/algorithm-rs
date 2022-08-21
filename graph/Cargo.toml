@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "union-find",
+    "digraph",
+    "weighted-graph",
+]

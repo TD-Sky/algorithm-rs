@@ -20,6 +20,11 @@
 - [x] [Red Black Tree](./tree/red-black-tree/src)
 - [x] [AVL Tree](./tree/avl-tree/src)
 
+## Graph
+- [x] [Union Find](./graph/union-find/src)
+- [x] [Digraph](./graph/digraph/src)
+- [x] [Weighted Graph](./graph/weighted-graph/src)
+
 ## Number Theory
 - [x] [Monotonic](./number-theory/src/monotonic.rs)
 - [x] [Linear sieve](./number-theory/src/linear_sieve.rs)
