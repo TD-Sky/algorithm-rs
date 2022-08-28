@@ -16,14 +16,14 @@ where
     let rmost_lt = (0..seq.len() - 1).rfind(|&i| seq[i] < seq[i + 1])?;
 
     // 寻找 rmost_lt 的最小上确界之下标
-    // 由于 rmost_lt 的性质，supermum 至少比它多1
-    let supermum = (rmost_lt + 1..seq.len())
+    // 由于 rmost_lt 的性质，supremum 至少比它多1
+    let supremum = (rmost_lt + 1..seq.len())
         .rfind(|&i| seq[i] > seq[rmost_lt])
         .unwrap();
 
     // 连同下文
     // 严格控制排列序数+1
-    seq.swap(rmost_lt, supermum);
+    seq.swap(rmost_lt, supremum);
 
     // rmost_lt 之后的部分按升序列举
     let mut rest = (rmost_lt + 1..seq.len()).into_iter();
