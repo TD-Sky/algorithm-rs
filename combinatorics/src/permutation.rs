@@ -1,19 +1,22 @@
 // 全排列生成器，按字典序进行
 // 前提：切片的元素互异
 // 结果：
-// - Some(&[T]) —— 字典序数+1的全排列
-// - None —— 切片长度 ≤ 1 或 降序排列
-pub fn next_permutation<T>(seq: &mut [T]) -> Option<&[T]>
+// - true —— 字典序数+1的全排列
+// - false —— 切片长度 ≤ 1 或 降序排列
+pub fn next_permutation<T>(seq: &mut [T]) -> bool
 where
     T: PartialOrd,
 {
     if seq.len() < 2 {
-        return None;
+        return false;
     }
 
     // 寻找最右侧、符合小于关系的下标
     // 找不到就说明传入数列字典序最大了
-    let rmost_lt = (0..seq.len() - 1).rfind(|&i| seq[i] < seq[i + 1])?;
+    let rmost_lt = match (0..seq.len() - 1).rfind(|&i| seq[i] < seq[i + 1]) {
+        Some(r) => r,
+        None => return false,
+    };
 
     // 寻找 rmost_lt 的最小上确界之下标
     // 由于 rmost_lt 的性质，supremum 至少比它多1
@@ -31,7 +34,7 @@ where
         seq.swap(head, tail);
     }
 
-    return Some(seq);
+    return true;
 }
 
 #[cfg(test)]
@@ -42,24 +45,29 @@ mod tests {
     fn permute_123() {
         let mut arr = [1, 2, 3];
 
-        assert_eq!(next_permutation(&mut arr), Some([1, 3, 2].as_slice()));
-        assert_eq!(next_permutation(&mut arr), Some([2, 1, 3].as_slice()));
-        assert_eq!(next_permutation(&mut arr), Some([2, 3, 1].as_slice()));
-        assert_eq!(next_permutation(&mut arr), Some([3, 1, 2].as_slice()));
-        assert_eq!(next_permutation(&mut arr), Some([3, 2, 1].as_slice()));
+        next_permutation(&mut arr);
+        assert_eq!(arr, [1, 3, 2]);
+        next_permutation(&mut arr);
+        assert_eq!(arr, [2, 1, 3]);
+        next_permutation(&mut arr);
+        assert_eq!(arr, [2, 3, 1]);
+        next_permutation(&mut arr);
+        assert_eq!(arr, [3, 1, 2]);
+        next_permutation(&mut arr);
+        assert_eq!(arr, [3, 2, 1]);
     }
 
     #[test]
     fn empty() {
         let mut arr: [(); 0] = [];
 
-        assert_eq!(next_permutation(&mut arr), None);
+        assert_eq!(next_permutation(&mut arr), false);
     }
 
     #[test]
     fn single() {
         let mut arr = [1];
 
-        assert_eq!(next_permutation(&mut arr), None);
+        assert_eq!(next_permutation(&mut arr), false);
     }
 }
