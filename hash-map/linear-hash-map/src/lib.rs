@@ -38,7 +38,7 @@ impl<K, V> LinearHashMap<K, V> {
     }
 
     fn find_none(&self, mut i: usize) -> usize {
-        while let Some(_) = self.base[i] {
+        while self.base[i].is_some() {
             i = (i + 1) % self.capacity;
         }
 
@@ -123,7 +123,7 @@ impl<K, V> LinearHashMap<K, V> {
         self.len += 1;
         self.base[i] = Some(Node::new(k, v));
 
-        return None;
+        None
     }
 
     pub fn remove<Q: ?Sized>(&mut self, k: &Q) -> Option<V>
@@ -142,12 +142,12 @@ impl<K, V> LinearHashMap<K, V> {
             i = (i + 1) % self.capacity;
         }
 
-        self.base[i].take().map_or(None, |node| {
+        self.base[i].take().map(|node| {
             // 从删除位的下一位开始，
             i = (i + 1) % self.capacity;
 
             // 遍历删除节点所在键簇。
-            while let Some(_) = &self.base[i] {
+            while self.base[i].is_some() {
                 // 寻找空位
                 let slot = self.find_none(i);
 
@@ -163,7 +163,7 @@ impl<K, V> LinearHashMap<K, V> {
                 self.resize(self.capacity / 2);
             }
 
-            Some(node.value)
+            node.value
         })
     }
 
@@ -182,7 +182,7 @@ impl<K, V> LinearHashMap<K, V> {
             i = (i + 1) % self.capacity;
         }
 
-        return None;
+        None
     }
 
     pub fn get_mut<Q: ?Sized>(&mut self, k: &Q) -> Option<&mut V>

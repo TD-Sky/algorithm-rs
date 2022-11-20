@@ -40,9 +40,9 @@ fn get() {
 
 #[test]
 fn drop_tree() {
-    let mut map = sample();
+    let map = sample();
 
-    drop(&mut map);
+    drop(map);
 }
 
 #[test]

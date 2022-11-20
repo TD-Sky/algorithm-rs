@@ -1,3 +1,5 @@
+#![feature(let_chains)]
+
 mod mst;
 
 #[cfg(test)]
@@ -7,6 +9,7 @@ use self::mst::{kruskal, lazy_prim, prim};
 use std::{
     cmp::Ordering,
     collections::{BTreeMap, HashSet},
+    hash::{Hash, Hasher},
     rc::Rc,
 };
 
@@ -17,10 +20,16 @@ struct Node<V> {
 
 pub type Edge = (u32, u32);
 
-#[derive(Debug, Hash, Eq)]
+#[derive(Debug, Eq)]
 pub struct WeiEdge {
     weight: i32,
     edge: Edge,
+}
+
+impl Hash for WeiEdge {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        state.write(&self.weight.to_ne_bytes());
+    }
 }
 
 impl PartialEq for WeiEdge {
@@ -108,7 +117,7 @@ impl<V> WeiGraph<V> {
     }
 
     pub fn ids(&self) -> impl Iterator<Item = u32> + '_ {
-        self.adj_table.keys().map(|&id| id)
+        self.adj_table.keys().copied()
     }
 
     pub fn edges(&self) -> impl Iterator<Item = &WeiEdge> {

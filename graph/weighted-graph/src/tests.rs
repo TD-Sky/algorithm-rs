@@ -37,8 +37,8 @@ fn print_mst(name: &'static str, mst: Vec<&WeiEdge>) -> IOResult<()> {
     Ok(())
 }
 
-fn weight_sum(mst: &Vec<&WeiEdge>) -> i32 {
-    mst.into_iter().map(|&edge| edge.weight).sum()
+fn weight_sum(mst: &[&WeiEdge]) -> i32 {
+    mst.iter().map(|&edge| edge.weight).sum()
 }
 
 #[test]

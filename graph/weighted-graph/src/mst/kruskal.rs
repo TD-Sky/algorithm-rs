@@ -2,7 +2,7 @@ use crate::{WeiEdge, WeiGraph};
 use std::{cmp::Reverse, collections::BinaryHeap};
 use union_find::UnionFind;
 
-pub(crate) fn span<'a, V>(graph: &'a WeiGraph<V>) -> Vec<&'a WeiEdge> {
+pub(crate) fn span<V>(graph: &WeiGraph<V>) -> Vec<&WeiEdge> {
     let mut uf = UnionFind::from_iter(graph.ids());
     let mut pq = BinaryHeap::new();
     let branches = graph.node_count() - 1;

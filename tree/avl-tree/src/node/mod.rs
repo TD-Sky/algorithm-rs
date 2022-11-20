@@ -156,7 +156,7 @@ where
         })
     }
 
-    pub(super) fn into_value(node: Box<Self>) -> V {
+    pub(super) fn into_value(node: Self) -> V {
         node.value
     }
 

@@ -10,7 +10,7 @@ pub struct Preorder<'a, K, V> {
 }
 
 impl<'a, K, V> Preorder<'a, K, V> {
-    pub(in crate) fn new() -> Self {
+    pub(crate) fn new() -> Self {
         Self {
             stack: VecDeque::new(),
             marked: HashSet::new(),
@@ -18,7 +18,7 @@ impl<'a, K, V> Preorder<'a, K, V> {
         }
     }
 
-    pub(in crate) fn with_root(root: NonNull<Node<K, V>>) -> Self {
+    pub(crate) fn with_root(root: NonNull<Node<K, V>>) -> Self {
         let mut iter = Self::new();
         iter.stack.push_back(root);
         iter
@@ -57,7 +57,7 @@ pub struct Inorder<'a, K, V> {
 }
 
 impl<'a, K, V> Inorder<'a, K, V> {
-    pub(in crate) fn new() -> Self {
+    pub(crate) fn new() -> Self {
         Self {
             stack: VecDeque::new(),
             marked: HashSet::new(),
@@ -65,7 +65,7 @@ impl<'a, K, V> Inorder<'a, K, V> {
         }
     }
 
-    pub(in crate) fn with_root(root: NonNull<Node<K, V>>) -> Self {
+    pub(crate) fn with_root(root: NonNull<Node<K, V>>) -> Self {
         let mut iter = Self::new();
         iter.stack.push_back(root);
         iter

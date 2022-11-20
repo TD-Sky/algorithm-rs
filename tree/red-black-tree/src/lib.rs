@@ -19,10 +19,12 @@ impl<K, V> Drop for RBTreeMap<K, V> {
                 postorder(child);
             }
 
-            Box::from_raw(node.as_ptr());
+            drop(Box::from_raw(node.as_ptr()));
         }
 
-        self.root.take().map(|tree| unsafe { postorder(tree) });
+        if let Some(tree) = self.root.take() {
+            unsafe { postorder(tree) }
+        }
     }
 }
 
@@ -70,7 +72,11 @@ where
         self.root.and_then(|_| {
             let removal = Node::remove_node(&mut self.root, key);
 
-            self.root.map(|mut root| unsafe { root.as_mut().blacken() });
+            if let Some(mut root) = self.root {
+                unsafe {
+                    root.as_mut().blacken();
+                }
+            }
 
             removal.map(|res| {
                 self.len -= 1;

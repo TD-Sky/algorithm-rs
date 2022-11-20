@@ -21,10 +21,12 @@ impl<K, V> Drop for AVLTreeMap<K, V> {
                 postorder(child);
             }
 
-            Box::from_raw(node.as_ptr());
+            drop(Box::from_raw(node.as_ptr()));
         }
 
-        self.root.take().map(|tree| unsafe { postorder(tree) });
+        if let Some(tree) = self.root.take() {
+            unsafe { postorder(tree) }
+        }
     }
 }
 
@@ -68,7 +70,7 @@ where
         self.root.and_then(|_| {
             Node::remove_node(&mut self.root, key).map(|res| {
                 self.len -= 1;
-                Node::into_value(res)
+                Node::into_value(*res)
             })
         })
     }

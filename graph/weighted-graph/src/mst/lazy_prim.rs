@@ -30,7 +30,7 @@ impl<'a, V> LazyPrimMST<'a, V> {
     }
 }
 
-pub(crate) fn span<'a, V>(graph: &'a WeiGraph<V>, root: u32) -> Vec<&'a WeiEdge> {
+pub(crate) fn span<V>(graph: &WeiGraph<V>, root: u32) -> Vec<&WeiEdge> {
     let mut mst = LazyPrimMST::new(graph);
     let mut res = Vec::with_capacity(graph.node_count() - 1);
 

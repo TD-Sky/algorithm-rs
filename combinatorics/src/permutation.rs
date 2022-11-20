@@ -29,12 +29,12 @@ where
     seq.swap(rmost_lt, supremum);
 
     // rmost_lt 之后的部分按升序列举
-    let mut rest = (rmost_lt + 1..seq.len()).into_iter();
+    let mut rest = (rmost_lt + 1)..seq.len();
     while let [Some(head), Some(tail)] = [rest.next(), rest.next_back()] {
         seq.swap(head, tail);
     }
 
-    return true;
+    true
 }
 
 #[cfg(test)]
@@ -61,13 +61,13 @@ mod tests {
     fn empty() {
         let mut arr: [(); 0] = [];
 
-        assert_eq!(next_permutation(&mut arr), false);
+        assert!(!next_permutation(&mut arr));
     }
 
     #[test]
     fn single() {
         let mut arr = [1];
 
-        assert_eq!(next_permutation(&mut arr), false);
+        assert!(!next_permutation(&mut arr));
     }
 }
