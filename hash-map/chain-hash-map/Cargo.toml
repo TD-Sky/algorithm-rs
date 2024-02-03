@@ -1,0 +1,7 @@
+[package]
+name = "chain-hash-map"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "chain_hash_map"
