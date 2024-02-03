@@ -1,0 +1,16 @@
+[workspace]
+resolver = "2"
+members = [
+  "combinatorics",
+  "graph/digraph",
+  "graph/union-find",
+  "graph/weighted-graph",
+  "hash-map/chain-hash-map",
+  "hash-map/linear-hash-map",
+  "list/linked-list",
+  "number-theory",
+  "search",
+  "sort",
+  "tree/avl-tree",
+  "tree/red-black-tree",
+]
