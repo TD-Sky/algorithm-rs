@@ -1,5 +1,3 @@
-#![feature(extract_if)]
-
 #[cfg(test)]
 mod tests;
 
@@ -55,7 +53,7 @@ impl<K, V> LinearHashMap<K, V> {
         // 提取已有节点，collect 后才能跟 base 脱开关系
         let nodes: Vec<_> = self
             .base
-            .extract_if(|opt| opt.is_some())
+            .extract_if(.., |opt| opt.is_some())
             .map(Option::unwrap)
             .collect();
 
@@ -126,10 +124,10 @@ impl<K, V> LinearHashMap<K, V> {
         None
     }
 
-    pub fn remove<Q: ?Sized>(&mut self, k: &Q) -> Option<V>
+    pub fn remove<Q>(&mut self, k: &Q) -> Option<V>
     where
         K: Borrow<Q> + Hash,
-        Q: Hash + Eq,
+        Q: Hash + Eq + ?Sized,
     {
         let mut i = self.hash(k);
 
@@ -167,10 +165,10 @@ impl<K, V> LinearHashMap<K, V> {
         })
     }
 
-    pub fn get<Q: ?Sized>(&self, k: &Q) -> Option<&V>
+    pub fn get<Q>(&self, k: &Q) -> Option<&V>
     where
         K: Borrow<Q>,
-        Q: Hash + Eq,
+        Q: Hash + Eq + ?Sized,
     {
         let mut i = self.hash(k);
 
@@ -185,10 +183,10 @@ impl<K, V> LinearHashMap<K, V> {
         None
     }
 
-    pub fn get_mut<Q: ?Sized>(&mut self, k: &Q) -> Option<&mut V>
+    pub fn get_mut<Q>(&mut self, k: &Q) -> Option<&mut V>
     where
         K: Borrow<Q>,
-        Q: Hash + Eq,
+        Q: Hash + Eq + ?Sized,
     {
         let mut i = self.hash(k);
 

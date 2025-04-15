@@ -18,11 +18,13 @@ impl<K, V> Drop for AVLTreeMap<K, V> {
     fn drop(&mut self) {
         // 后序遍历销毁树
         unsafe fn postorder<K, V>(mut node: NonNull<Node<K, V>>) {
-            for child in node.as_mut().children() {
-                postorder(child);
-            }
+            unsafe {
+                for child in node.as_mut().children() {
+                    postorder(child);
+                }
 
-            drop(Box::from_raw(node.as_ptr()));
+                drop(Box::from_raw(node.as_ptr()));
+            }
         }
 
         if let Some(tree) = self.root.take() {
@@ -67,9 +69,8 @@ where
             Some(mut root) => {
                 let res = unsafe { root.as_mut().insert(key, value) };
 
-                res.map(|val| {
+                res.inspect(|_| {
                     self.len -= 1;
-                    val
                 })
             }
         }

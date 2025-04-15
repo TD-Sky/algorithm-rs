@@ -56,7 +56,7 @@ impl<K, V> Node<K, V> {
     /* 链接颜色判定方法 */
 
     fn is_red(opt_node: NodePtr<K, V>) -> bool {
-        opt_node.map_or(false, |node| unsafe { node.as_ref().color.is_red() })
+        opt_node.is_some_and(|node| unsafe { node.as_ref().color.is_red() })
     }
 
     fn red_right(&self) -> bool {
@@ -68,26 +68,25 @@ impl<K, V> Node<K, V> {
     }
 
     fn red_double_left(&self) -> bool {
-        self.left.map_or(false, |left| unsafe {
-            left.as_ref().color.is_red() && left.as_ref().red_left()
-        })
+        self.left
+            .is_some_and(|left| unsafe { left.as_ref().color.is_red() && left.as_ref().red_left() })
     }
 
     fn red_left_of_right(&self) -> bool {
         self.right
-            .map_or(false, |right| unsafe { right.as_ref().red_left() })
+            .is_some_and(|right| unsafe { right.as_ref().red_left() })
     }
 
     fn red_left_of_left(&self) -> bool {
         self.left
-            .map_or(false, |left| unsafe { left.as_ref().red_left() })
+            .is_some_and(|left| unsafe { left.as_ref().red_left() })
     }
 
     /* 局部变换 */
 
     unsafe fn rot_left(&mut self) {
         // 拔下右节点
-        let right = { self.right.take().unwrap().as_mut() };
+        let right = unsafe { self.right.take().unwrap().as_mut() };
 
         // 中结点链接到当前节点右侧
         self.right = right.left.take();
@@ -104,7 +103,7 @@ impl<K, V> Node<K, V> {
 
     unsafe fn rot_right(&mut self) {
         // 拔下左节点
-        let left = { self.left.take().unwrap().as_mut() };
+        let left = unsafe { self.left.take().unwrap().as_mut() };
 
         // 中结点链接到当前节点左侧
         self.left = left.right.take();
@@ -234,7 +233,8 @@ where
         Q: ?Sized + Ord,
         K: Borrow<Q>,
     {
-        match self.key.borrow().cmp(key) {
+        let node_key: &Q = self.key.borrow();
+        match node_key.cmp(key) {
             Ordering::Equal => Some(self),
 
             Ordering::Less => self

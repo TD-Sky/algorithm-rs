@@ -1,5 +1,3 @@
-#![feature(extract_if)]
-
 #[cfg(test)]
 mod tests;
 
@@ -88,10 +86,10 @@ impl<K, V> ChainHashMap<K, V> {
         }
     }
 
-    pub fn remove<Q: ?Sized>(&mut self, k: &Q) -> Option<V>
+    pub fn remove<Q>(&mut self, k: &Q) -> Option<V>
     where
         K: Borrow<Q>,
-        Q: Hash + Eq,
+        Q: Hash + Eq + ?Sized,
     {
         let bucket = self.hash(k);
 
@@ -104,10 +102,10 @@ impl<K, V> ChainHashMap<K, V> {
             })
     }
 
-    pub fn get<Q: ?Sized>(&self, k: &Q) -> Option<&V>
+    pub fn get<Q>(&self, k: &Q) -> Option<&V>
     where
         K: Borrow<Q>,
-        Q: Hash + Eq,
+        Q: Hash + Eq + ?Sized,
     {
         let bucket = self.hash(k);
 
@@ -116,10 +114,10 @@ impl<K, V> ChainHashMap<K, V> {
             .find_map(|node| node.key.borrow().eq(k).then_some(&node.value))
     }
 
-    pub fn get_mut<Q: ?Sized>(&mut self, k: &Q) -> Option<&mut V>
+    pub fn get_mut<Q>(&mut self, k: &Q) -> Option<&mut V>
     where
         K: Borrow<Q>,
-        Q: Hash + Eq,
+        Q: Hash + Eq + ?Sized,
     {
         let bucket = self.hash(k);
 

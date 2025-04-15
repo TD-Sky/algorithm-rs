@@ -14,3 +14,7 @@ members = [
   "tree/avl-tree",
   "tree/red-black-tree",
 ]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
